@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Patients</title>
+  <link rel="stylesheet" href="/webjars/bootstrap/5.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/webjars/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+<div class="p-3">
+  <div class="card">
+    <div class="card-header">List Patients</div>
+    <div class="card-body">
+      <form method="get" th:action="@{/index}" class="mb-3">
+        <label>Keyword:</label>
+        <input type="text" name="keyword" th:value="${keyword}" class="form-control d-inline w-auto mx-2">
+        <button type="submit" class="btn btn-info"> <i class="bi bi-search"> </i> </button>
+      </form>
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Date</th>
+          <th>Malade</th>
+          <th>Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${listPatients}">
+          <td th:text="${p.id}"></td>
+          <td th:text="${p.name}"></td>
+          <td th:text="${p.dateOfBirth}"></td>
+          <td th:text="${p.malade}"></td>
+          <td th:text="${p.score}"></td>
+          <td><a  onclick="return confirm('are you sure you want to delete that patient')" th:href="@{delete(id=${p.id},keyword=${keyword},page=${currentPage})}" class="btn btn-danger" > <i class="bi bi-trash"> </i></a></td>
+        </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <ul class="nav nav-pills">
+        <li th:each="page, status : ${pages}">
+          <a th:href="@{/index(page=${status.index},keyword=${keyword})}"
+             th:class="${currentPage == status.index} ? 'btn btn-info' : 'btn btn-outline-info'"
+             th:text="${status.index}"></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>
